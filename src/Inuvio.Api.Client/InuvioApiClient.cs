@@ -8,16 +8,26 @@ namespace ASOL.Inuvio.Api.Client
     // InuvioApiClient.cs - INJECT adapter, ne Refit interface!
     internal class InuvioApiClient : IInuvioApiClient
     {
-        private readonly IInuvioSystemApi _systemApi;  
+        private readonly IInuvioSystemApi _systemApi;
+        private readonly IAVAModelsApi _avaModelsApi;
 
         public InuvioApiClient(
-            IInuvioSystemApi systemApi)
+            IInuvioSystemApi systemApi,
+            IAVAModelsApi avaModelsApi)
             
         {
             _systemApi = systemApi ?? throw new ArgumentNullException(nameof(systemApi));
+            _avaModelsApi = avaModelsApi ?? throw new ArgumentNullException(nameof(avaModelsApi));
         }
 
+        /// <summary>
+        /// Gets the Inuvio System API client.
+        /// </summary>
         public IInuvioSystemApi InuvioSystemApi => _systemApi;
+        /// <summary>
+        /// Gets the AVA Models API client.
+        /// </summary>  
+        public IAVAModelsApi AVAModelsApi => _avaModelsApi;
 
         /// <summary>
         /// Checks whether a connection to the target service or resource can be established.
@@ -28,7 +38,7 @@ namespace ASOL.Inuvio.Api.Client
         {
             try
             {
-                await _systemApi.GetStatus(cancellationToken);  // ✅ Přes public interface
+                await _systemApi.GetStatusAsync(cancellationToken);  // ✅ Přes public interface
                 return new CallResult { IsSuccess = true };
             }
             catch (Exception ex)

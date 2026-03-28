@@ -5,7 +5,7 @@ using System.Text;
 namespace ASOL.Inuvio.Api.Client.Contracts
 {
     /// <summary>
-    /// Rozhraní pro Inuvio API klienta, který bude zajišťovat komunikaci s Inuvio API.
+    /// Inuvio API client interface defines the contract for interacting with the Inuvio API. It provides access to various API interfaces, such as the system API and AVA models API, allowing clients to perform operations related to system status, AVA model management, and other functionalities offered by the Inuvio service. Additionally, it includes a method for checking the connection status to ensure that the client can successfully communicate with the Inuvio API.
     /// </summary>
     public interface IInuvioApiClient
     {
@@ -14,6 +14,11 @@ namespace ASOL.Inuvio.Api.Client.Contracts
         /// Gets the system API interface
         /// </summary>
         IInuvioSystemApi InuvioSystemApi { get; }
+
+        /// <summary>
+        /// Gets the AVA Models API interface
+        /// </summary>
+        IAVAModelsApi AVAModelsApi { get; }
 
         /// <summary>
         /// Asynchronously checks the status of the current connection.

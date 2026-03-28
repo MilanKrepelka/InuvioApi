@@ -1,4 +1,4 @@
-﻿namespace ASOL.Inuvio.Api.Client.Wrappers
+﻿namespace ASOL.Inuvio.Api.Client.Contracts.Wrappers
 {
     /// <summary>
     /// Provides an abstraction for retrieving the current date and time.

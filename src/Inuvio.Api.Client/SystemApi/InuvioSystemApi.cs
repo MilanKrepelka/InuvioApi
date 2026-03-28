@@ -27,12 +27,12 @@ namespace ASOL.Inuvio.Api.Client.SystemApi
         }
 
         /// <inheritdoc/>   
-        public async Task<StatusResponse> GetStatus(CancellationToken cancellationToken = default)
+        public async Task<StatusResponse> GetStatusAsync(CancellationToken cancellationToken = default)
         {
             try
             {
                 _logger.LogDebug("Getting system status");
-                var result = await _refitClient.GetStatus(cancellationToken);
+                var result = await _refitClient.GetStatusAsync(cancellationToken);
                 _logger.LogDebug("Successfully retrieved system status");
                 return result;
             }

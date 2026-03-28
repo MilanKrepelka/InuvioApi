@@ -1,36 +1,44 @@
 ﻿namespace ASOL.Inuvio.Api.Client.Options
 {
+    /// <summary>
+    /// Configuration options for connecting to the iNuvio API.
+    /// </summary>
     public class InuvioApiConnectionOptions
     {
         /// <summary>
-        /// Uživatel pro připojení k iNuvio API
+        /// Username for iNuvio API connection.
         /// </summary>
         public string UserName { get; set; } = string.Empty;
+
         /// <summary>
-        /// Heslo pro připojení k iNuvio API
+        /// Password for iNuvio API connection.
         /// </summary>
         public string Password { get; set; } = string.Empty;
+
         /// <summary>
-        /// Url k iNuvio API
+        /// URL to iNuvio API endpoint.
         /// </summary>
         public string ServerUrl { get; set; } = string.Empty;
 
         /// <summary>
-        /// <see cref="ServerUrl"/> bez koncového lomítka
+        /// Gets the <see cref="ServerUrl"/> without trailing slash.
         /// </summary>
         public string ServerUrlWithoutTrailingSlash => ServerUrl.TrimEnd('/');
 
-
-        public InuvioApiConnectionOptions()
-        {
-
-        }
-
-        override public string ToString()
+        /// <summary>
+        /// Returns a string representation of the connection options with masked password.
+        /// </summary>
+        /// <returns>A string containing server URL, username, and masked password.</returns>
+        public override string ToString()
         {
             return $"ServerUrl:{ServerUrl}, UserName:{UserName}, Password:**??**";
         }
 
+        /// <summary>
+        /// Parses the server URL to extract the base URL and port number.
+        /// </summary>
+        /// <param name="serverUrl">The server URL to parse.</param>
+        /// <returns>A tuple containing the server URL without port and the port number.</returns>
         public static (string ServerUrlWoPort, string Port) ParseServerUrl(string serverUrl)
         {
             if (string.IsNullOrEmpty(serverUrl))
@@ -57,6 +65,11 @@
             }
         }
 
+        /// <summary>
+        /// Parses the login name to extract the domain and username.
+        /// </summary>
+        /// <param name="loginName">The login name to parse (format: DOMAIN\Username).</param>
+        /// <returns>A tuple containing the domain name and username.</returns>
         public static (string DomainName, string UserName) ParseLoginName(string loginName)
         {
             if (string.IsNullOrEmpty(loginName))
@@ -69,6 +82,5 @@
                 ? (string.Empty, loginName)
                 : (loginName.Substring(0, idx), loginName.Substring(idx + 1));
         }
-
     }
 }

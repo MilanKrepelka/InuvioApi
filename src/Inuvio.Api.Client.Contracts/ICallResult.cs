@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ASOL.Inuvio.Api.Client.Contracts
+﻿namespace ASOL.Inuvio.Api.Client.Contracts
 {
-    
+
     /// <summary>
     /// Defines the result of an operation, including success status and error information.
     /// </summary>

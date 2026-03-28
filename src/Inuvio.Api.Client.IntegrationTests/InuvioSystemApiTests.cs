@@ -24,7 +24,7 @@ namespace ASOL.Inuvio.Api.Client.IntegrationTests
         {
             var inuvioSystemApi = _fixture.GetServiceProvider(_testOutputHelper).GetRequiredService<IInuvioSystemApi>();
 
-            var result = await inuvioSystemApi.GetStatus(CancellationToken.None);
+            var result = await inuvioSystemApi.GetStatusAsync(CancellationToken.None);
 
             Assert.NotNull(result);
             Assert.NotNull(result.Licence);

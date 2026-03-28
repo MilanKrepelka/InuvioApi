@@ -1,4 +1,5 @@
-﻿using ASOL.Inuvio.Api.Client.Contracts.SystemApi.Responses;
+﻿using ASOL.Inuvio.Api.Client.Contracts.AVAModelsApi.Responses;
+using ASOL.Inuvio.Api.Client.Contracts.SystemApi.Responses;
 
 
 namespace ASOL.Inuvio.Api.Client.Contracts
@@ -9,9 +10,6 @@ namespace ASOL.Inuvio.Api.Client.Contracts
     /// </summary>
     public interface IInuvioSystemApi
     {
-        
-        Task<StatusResponse> GetStatus(CancellationToken cancellationToken = default);
-        
-        
+        Task<StatusResponse> GetStatusAsync(CancellationToken cancellationToken = default);
     }
 }

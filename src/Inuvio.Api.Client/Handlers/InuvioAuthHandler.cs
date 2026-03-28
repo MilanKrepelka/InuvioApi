@@ -1,4 +1,3 @@
-// Inuvio.Api.Client\Handlers\InuvioAuthHandler.cs
 using ASOL.Inuvio.Api.Client.Contracts;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
@@ -8,7 +7,7 @@ namespace ASOL.Inuvio.Api.Client.Handlers
     /// <summary>
     /// DelegatingHandler that automatically adds Bearer token to all requests
     /// </summary>
-    public class InuvioAuthHandler : DelegatingHandler
+    internal class InuvioAuthHandler : DelegatingHandler
     {
         private readonly IInuvioApiTokenProvider _tokenProvider;
         private readonly ILogger<InuvioAuthHandler> _logger;

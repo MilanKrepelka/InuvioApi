@@ -1,7 +1,4 @@
 ﻿
-
-using ASOL.Inuvio.Api.Client.Contracts;
-
 namespace ASOL.Inuvio.Api.Client.Contracts.UnitTests
 {
     /// <summary>
