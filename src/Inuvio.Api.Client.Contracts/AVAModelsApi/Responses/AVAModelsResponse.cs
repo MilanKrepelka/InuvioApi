@@ -14,6 +14,6 @@ namespace ASOL.Inuvio.Api.Client.Contracts.AVAModelsApi.Responses
         /// Gets the collection of AVA models.
         /// </summary>
         [JsonPropertyName("models")]
-        public IReadOnlyList<AVAModelInfo> Models { get; init; } = [];
+        public IReadOnlyList<AVAModelInfo> Models { get; init; } = Array.Empty<AVAModelInfo>();
     }
 }

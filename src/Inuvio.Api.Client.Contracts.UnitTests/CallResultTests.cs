@@ -23,7 +23,7 @@ namespace ASOL.Inuvio.Api.Client.Contracts.UnitTests
         }
 
         /// <summary>
-        /// Tests that the Success method returns a CallResult with IsSuccess set to true
+        /// Tests that the IsSuccess method returns a CallResult with IsSuccess set to true
         /// and an empty ErrorMessage.
         /// </summary>
         [Fact]

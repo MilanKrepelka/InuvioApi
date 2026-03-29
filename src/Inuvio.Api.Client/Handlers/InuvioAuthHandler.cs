@@ -60,7 +60,7 @@ namespace ASOL.Inuvio.Api.Client.Handlers
             }
             catch (Exception ex) when (ex is not UnauthorizedAccessException)
             {
-                _logger.LogError(ex, "Error in InuvioAuthHandler: {Message}", ex.Message);
+                _logger.LogError(ex, "Error in InuvioAuthHandler: {ErrorMessage}", ex.Message);
                 throw;
             }
         }

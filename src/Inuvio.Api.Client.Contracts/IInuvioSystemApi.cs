@@ -11,5 +11,6 @@ namespace ASOL.Inuvio.Api.Client.Contracts
     public interface IInuvioSystemApi
     {
         Task<StatusResponse> GetStatusAsync(CancellationToken cancellationToken = default);
+        Task<DatabasesResponse> GetDatabasesAsync(CancellationToken cancellationToken = default);
     }
 }

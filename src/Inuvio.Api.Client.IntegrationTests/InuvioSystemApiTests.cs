@@ -20,7 +20,7 @@ namespace ASOL.Inuvio.Api.Client.IntegrationTests
         }
 
         [Fact]
-        public async Task Status_Returns_ValidStatus()
+        public async Task GetStatusAsync_Returns_ValidStatus()
         {
             var inuvioSystemApi = _fixture.GetServiceProvider(_testOutputHelper).GetRequiredService<IInuvioSystemApi>();
 
@@ -34,5 +34,15 @@ namespace ASOL.Inuvio.Api.Client.IntegrationTests
             Assert.NotNull(result.Version);
         }
 
+        [Fact]
+        public async Task GetDatabasesAsync_Returns_ValidDatabases()
+        {
+            var inuvioSystemApi = _fixture.GetServiceProvider(_testOutputHelper).GetRequiredService<IInuvioSystemApi>();
+
+            var result = await inuvioSystemApi.GetDatabasesAsync(CancellationToken.None);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Databases);
+        }
     }
 }
