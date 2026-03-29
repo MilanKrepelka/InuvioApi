@@ -1,4 +1,5 @@
-﻿using ASOL.Inuvio.Api.Client.Contracts;
+﻿using ASOL.Inuvio.Api.Client.AVAModelsApi;
+using ASOL.Inuvio.Api.Client.Contracts;
 using ASOL.Inuvio.Api.Client.Handlers;
 using ASOL.Inuvio.Api.Client.Options;
 using ASOL.Inuvio.Api.Client.SystemApi;
@@ -18,7 +19,16 @@ namespace ASOL.Inuvio.Api.Client.Extensions
     public static class ServiceCollectionExtensions
     {
         
-        private static IServiceCollection addAddInuvioApiClientServices(this IServiceCollection services)
+        /// <summary>
+        /// Adds and configures all required services for the Inuvio API client, including authentication, token
+        /// management, HTTP handlers, and Refit clients, to the specified service collection.
+        /// </summary>
+        /// <remarks>This method registers all dependencies needed for consuming the Inuvio API, including
+        /// token providers, HTTP handlers, and Refit-based API clients. It should be called during application startup
+        /// as part of the dependency injection configuration.</remarks>
+        /// <param name="services">The service collection to which the Inuvio API client services will be added. Must not be null.</param>
+        /// <returns>The same service collection instance with the Inuvio API client services registered.</returns>
+        private static IServiceCollection AddAddInuvioApiClientServices(this IServiceCollection services)
         {
             services.AddSingleton<IDateTimeNowWrapper, DateTimeNowWrapper>();
             services.AddTransient<IInuvioApiTokenGenerator, InuvioApiTokenGenerator>();
@@ -39,24 +49,18 @@ namespace ASOL.Inuvio.Api.Client.Extensions
                         PropertyNameCaseInsensitive = true,
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                        Converters = { new JsonStringEnumConverter() }
+                        Converters = { new JsonStringEnumConverter() },
+                        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
                     })
             };
 
-            // Register INTERNAL Refit client
-            services.AddRefitClient<IInuvioSystemApiRefit>(refitSettings)
-                .ConfigureHttpClient((sp, client) =>
-                {
-
-                    var options = sp.GetRequiredService<IOptions<InuvioApiConnectionOptions>>().Value;
-                    client.BaseAddress = new Uri(options.ServerUrlWithoutTrailingSlash);
-                    client.Timeout = TimeSpan.FromSeconds(30);
-                })
-                .AddHttpMessageHandler<TimingDelegatingHandler>()
-                .AddHttpMessageHandler<InuvioAuthHandler>();
+            // Register INTERNAL Refit clients
+            AddRefitClientWithAuth<IInuvioSystemApiRefit>(services, refitSettings);
+            AddRefitClientWithAuth<IAVAModelsApiRefit>(services, refitSettings);
 
             // Register PUBLIC contract implementation (Adapter)
             services.AddTransient<IInuvioSystemApi, InuvioSystemApi>();
+            services.AddTransient<IAVAModelsApi, AVAModelsApi.InuvioAVAModelsApi>();
 
             // Main client facade
             services.AddTransient<IInuvioApiClient, InuvioApiClient>();
@@ -70,6 +74,41 @@ namespace ASOL.Inuvio.Api.Client.Extensions
             });
             return services;
         }
+
+        /// <summary>
+        /// Adds a Refit client of the specified interface type to the service collection and configures it with
+        /// authentication and custom HTTP handlers.
+        /// </summary>
+        /// <remarks>This method configures the Refit client with a base address and timeout, and adds
+        /// HTTP message handlers for timing and authentication. The client will use the server URL specified in the
+        /// registered InuvioApiConnectionOptions. This method is intended for use during application startup when
+        /// registering services for dependency injection.</remarks>
+        /// <typeparam name="T">The interface type of the Refit client to register. Must be a class.</typeparam>
+        /// <param name="services">The service collection to which the Refit client will be added.</param>
+        /// <param name="refitSettings">The Refit settings to use when configuring the client.</param>
+        private static void AddRefitClientWithAuth<T>(IServiceCollection services, RefitSettings refitSettings) where T : class
+        {
+            services.AddRefitClient<T>(refitSettings)
+                .ConfigureHttpClient((sp, client) =>
+                {
+                    var options = sp.GetRequiredService<IOptions<InuvioApiConnectionOptions>>().Value;
+                    client.BaseAddress = new Uri(options.ServerUrlWithoutTrailingSlash);
+                    client.Timeout = TimeSpan.FromSeconds(30);
+                })
+                .AddHttpMessageHandler<TimingDelegatingHandler>()
+                .AddHttpMessageHandler<InuvioAuthHandler>();
+        }
+
+        /// <summary>
+        /// Adds and configures the Inuvio API client and its related services to the specified service collection.
+        /// </summary>
+        /// <remarks>This method registers the Inuvio API client and binds configuration settings from the
+        /// 'InuvioApiConnection' section. Call this method during application startup to enable API client
+        /// functionality throughout the application.</remarks>
+        /// <param name="services">The service collection to which the Inuvio API client services will be added. Must not be null.</param>
+        /// <param name="configuration">The application configuration containing the Inuvio API connection settings. Must not be null.</param>
+        /// <returns>The service collection with the Inuvio API client services registered. This enables dependency injection of
+        /// the API client and related options.</returns>
         public static IServiceCollection AddInuvioApiClient(
             this IServiceCollection services,
             IConfiguration configuration)
@@ -79,11 +118,18 @@ namespace ASOL.Inuvio.Api.Client.Extensions
             services.Configure<InuvioApiConnectionOptions>(
                 configuration.GetSection("InuvioApiConnection"));
 
-            return addAddInuvioApiClientServices(services);
+            return AddAddInuvioApiClientServices(services);
         }
-
-       
-
+        /// <summary>
+        /// Adds and configures the Inuvio API client and its dependencies to the specified service collection.
+        /// </summary>
+        /// <remarks>Call this method during application startup to register the Inuvio API client for
+        /// dependency injection. The provided configuration delegate allows customization of connection
+        /// settings.</remarks>
+        /// <param name="services">The service collection to which the Inuvio API client services will be added.</param>
+        /// <param name="configureOptions">A delegate used to configure the options for connecting to the Inuvio API.</param>
+        /// <returns>The service collection with the Inuvio API client services registered. This enables chaining additional
+        /// service configuration calls.</returns>
         public static IServiceCollection AddInuvioApiClient(
             this IServiceCollection services,
             Action<InuvioApiConnectionOptions> configureOptions)
@@ -91,7 +137,7 @@ namespace ASOL.Inuvio.Api.Client.Extensions
             services.AddOptions<InuvioApiConnectionOptions>();
             services.Configure(configureOptions);
 
-            return addAddInuvioApiClientServices(services);
+            return AddAddInuvioApiClientServices(services);
         }
     }
 }

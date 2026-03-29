@@ -18,7 +18,7 @@ namespace ASOL.Inuvio.Api.Client.Extensions
             {
                 sb.AppendLine($"--- Exception Level {level} ---");
                 sb.AppendLine($"Type: {ex.GetType().FullName}");
-                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine($"ErrorMessage: {ex.Message}");
                 sb.AppendLine($"StackTrace: {ex.StackTrace}");
 
                 if (ex.Data?.Count > 0)

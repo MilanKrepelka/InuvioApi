@@ -15,7 +15,7 @@ namespace ASOL.Inuvio.Api.Client
     /// <summary>
     /// Provides OAuth2-based token authentication for iNuvio API.
     /// </summary>
-    public class InuvioOauth2ApiTokenProvider : IInuvioApiTokenProvider, IDisposable
+    internal class InuvioOauth2ApiTokenProvider : IInuvioApiTokenProvider, IDisposable
     {
         private const string HttpClientName = "iNuvioAPIAuth";
 

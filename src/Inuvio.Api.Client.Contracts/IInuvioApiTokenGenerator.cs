@@ -5,14 +5,14 @@ using System.Text;
 namespace ASOL.Inuvio.Api.Client.Contracts
 {
     /// <summary>
-    /// Rozhraní které reprezentuje funkcionalitu generování JWT tokenu pro autentikaci k iNuvio eServeru
+    /// Interface for generating API tokens for iNuvio API authentication.
     /// </summary>
     public interface IInuvioApiTokenGenerator
     {
         /// <summary>
-        /// Vygeneruje token
+        /// Generates a new API token or retrieves an existing one for authenticating with the iNuvio API.
         /// </summary>
-        /// <returns>Token</returns>
+        /// <returns>The generated API token.</returns>
         string GenerateToken();
     }
 }

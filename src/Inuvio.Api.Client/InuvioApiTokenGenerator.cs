@@ -11,7 +11,7 @@ namespace ASOL.Inuvio.Api.Client
     /// <summary>
     /// Generates and decodes JWT tokens for iNuvio API authentication.
     /// </summary>
-    public class InuvioApiTokenGenerator : IInuvioApiTokenGenerator
+    internal class InuvioApiTokenGenerator : IInuvioApiTokenGenerator
     {
         private readonly string _issuer = "iNuvioAgent";
         private readonly string _passPhrase = "87142cc3248b4888065194e55eb91d5a93ea44cdb37b40ea4b39aedb211177f26737db73d9a53173f74bfc1a9387e9621ed096e9179d9e975f8b32917f912456";

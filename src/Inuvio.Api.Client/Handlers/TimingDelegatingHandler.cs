@@ -1,7 +1,10 @@
 using Microsoft.Extensions.Logging;
 namespace ASOL.Inuvio.Api.Client.Handlers
 {
-    public class TimingDelegatingHandler : DelegatingHandler
+    /// <summary>
+    /// DelegatingHandler that measures the time taken for an HTTP request and logs the duration along with the request method, URI, and response status code.
+    /// </summary>
+    internal class TimingDelegatingHandler : DelegatingHandler
     {
         private readonly ILogger<TimingDelegatingHandler> _logger;
 

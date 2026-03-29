@@ -26,13 +26,39 @@ namespace ASOL.Inuvio.Api.Client.SystemApi
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        /// <inheritdoc/>   
-        public async Task<StatusResponse> GetStatus(CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Asynchronously retrieves the list of system databases from the Inuvio API. Logs the operation and handles any API exceptions that may occur.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a response with the list of system databases.</returns>
+        public async Task<DatabasesResponse> GetDatabasesAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _logger.LogDebug("Getting system databases");
+                var result = await _refitClient.GetDatabasesAsync(cancellationToken);
+                _logger.LogDebug("Successfully retrieved system databases");
+                return result;
+            }
+            catch (Refit.ApiException ex)
+            {
+                _logger.LogError(ex, "Failed to get system databases. Status: {StatusCode}", ex.StatusCode);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the current system status.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="StatusResponse"/>
+        /// object with the current system status.</returns>
+        public async Task<StatusResponse> GetStatusAsync(CancellationToken cancellationToken = default)
         {
             try
             {
                 _logger.LogDebug("Getting system status");
-                var result = await _refitClient.GetStatus(cancellationToken);
+                var result = await _refitClient.GetStatusAsync(cancellationToken);
                 _logger.LogDebug("Successfully retrieved system status");
                 return result;
             }
