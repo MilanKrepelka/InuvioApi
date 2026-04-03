@@ -21,9 +21,8 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Restore dependencies
-      working-directory: ./src
-      run: dotnet restore
+      run: dotnet restore src/Inuvio.Api.Client.slnx
     - name: Build
-      run: dotnet build Inuvio.Api.Client.slnx --no-restore
+      run: dotnet build src/Inuvio.Api.Client.slnx --no-restore
     # - name: Test
     #  run: dotnet test --no-build --verbosity normal
