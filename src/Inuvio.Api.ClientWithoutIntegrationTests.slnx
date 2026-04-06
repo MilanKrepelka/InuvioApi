@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="Inuvio.Api.Client.Contracts.UnitTests/ASOL.Inuvio.Api.Client.Contracts.UnitTests.csproj" />
+  <Project Path="Inuvio.Api.Client.Contracts/ASOL.Inuvio.Api.Client.Contracts.csproj" />
+  <Project Path="Inuvio.Api.Client.UnitTests/ASOL.Inuvio.Api.Client.UnitTests.csproj" Id="244435a2-c78c-4c1d-8dd4-bca95c94d3a1" />
+  <Project Path="Inuvio.Api.Client/ASOL.Inuvio.Api.Client.csproj" />
+</Solution>
